@@ -1,0 +1,10 @@
+cHello hello;
+
+// register application method
+// Whenever server sees <!--#webem hello -->
+// call cHello::DisplayHTML() and include the HTML returned
+
+theServer.RegisterIncludeCode( "hello",
+			       boost::bind(
+					   &cHello::DisplayHTML,// member function
+					   &hello ) );// instance of class

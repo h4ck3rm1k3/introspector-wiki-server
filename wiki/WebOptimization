@@ -1,0 +1,19 @@
+store database query results in optimal c++ class structure and custom memory management.
+
+
+use thread data to store information needed in a thread, which is a current context
+
+look into asio::webserver from boost, 
+
+store common data (cached) in a static cache.
+store changing information , like stock levels locally. 
+run database queries to fetch data.
+use different databases and different storage instruments for different types of data.
+store session data on client side in encrypted (or just signed) blobs of data.
+store private session data on server side, referened by client in encrypted (or just signed) blobs of data, or restrict access so that it will be stored optimally. 
+database slaves are used to replicate the data, database proxies to distribute load.
+query other servers in a pool as needed, or use a central proxy server be able to request full objects.
+be able to run nagios/icinga checks that run a debugger and or valgrind or other tools to intercept program execution and collect values.
+
+this introspection code can be compiled into the programs run, or extracted from the source code and applied to the registers and blocks in memory.
+

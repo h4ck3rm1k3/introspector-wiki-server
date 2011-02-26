@@ -1,0 +1,15 @@
+this idea is the capture each instructions data, so given a IP, instruction pointer, we should be able to figure out what it is doing,
+using the gdb.
+
+we want to be able to embed the gcc, gdb, libtool, binutils, into icinga, into a new webserver.
+basically we want to be able to inspect a program from inside of icinga, it would run a program and extract variables directly from memory.
+we can find the addresses of the memory using introspection, tools to intercept data as it is coming in and trace its flow along the program and give meaning to such data.
+
+we basically build up a large database of inputs and output and track them all.
+
+I want to be able to start the gdb inside the gcc when compile time evaluation triggers a function.
+we want to be able involve the user into the compiling, so that they can write programs to fill in answers to compile time (or run time) questions.
+
+we want to be able to compile code on the fly for later execution, caching as you might say.
+
+users want to store secure data on the server. they might have slow computers and want to offload processing to the server.transform java calls into html for example. 
