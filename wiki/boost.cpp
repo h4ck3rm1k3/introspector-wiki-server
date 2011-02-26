@@ -77,72 +77,9 @@ void connection::start() {
 }
 
 
-/** 
- * 
- * 
- * @param err 
- * @param len 
- */
-void connection::handle_server_write(const bs::error_code& err, size_t len) {
-	if(!err) {
-		async_read(ssocket_, ba::buffer(sbuffer), ba::transfer_at_least(1),
-				   boost::bind(&connection::handle_server_read_headers,
-							   shared_from_this(),
-							   ba::placeholders::error,
-							   ba::placeholders::bytes_transferred));
-	}else {
-		shutdown();
-	}
-}
 
 
 
-/** 
- * 
- * 
- * @param err 
- * @param len 
- */
-void connection::handle_server_read_body(const bs::error_code& err, size_t len) {
-	if(!err || err == ba::error::eof) {
-		RespReaded+=len;
-		if(err == ba::error::eof)
-			proxy_closed=true;
-		ba::async_write(bsocket_, ba::buffer(sbuffer,len),
-						boost::bind(&connection::handle_browser_write,
-									shared_from_this(),
-									ba::placeholders::error,
-									ba::placeholders::bytes_transferred));
-	} else {
-		shutdown();
-	}
-}
-
-/** 
- * 
- * 
- * @param err 
- * @param len 
- */
-void connection::handle_browser_write(const bs::error_code& err, size_t len) {
-	if(!err) {
-		if(!proxy_closed && (RespLen == -1 || RespReaded < RespLen))
-			async_read(ssocket_, ba::buffer(sbuffer,len), ba::transfer_at_least(1),
-					   boost::bind(&connection::handle_server_read_body,
-								   shared_from_this(),
-								   ba::placeholders::error,
-								   ba::placeholders::bytes_transferred));
-		else {
-//			shutdown();
- 			if(isPersistent && !proxy_closed) {
-  				std::cout << "Starting read headers from browser, as connection is persistent" << std::endl;
-  				start();
- 			}
-		}
-	} else {
-		shutdown();
-	}
-}
 
 void connection::shutdown() {
 	ssocket_.close();
@@ -166,18 +103,6 @@ void connection::shutdown() {
  * @param err 
  * @param endpoint_iterator 
  */
-void connection::handle_resolve(const boost::system::error_code& err,
-								ba::ip::tcp::resolver::iterator endpoint_iterator) {
-    if (!err) {
-		ba::ip::tcp::endpoint endpoint = *endpoint_iterator;
-		ssocket_.async_connect(endpoint,
-							  boost::bind(&connection::handle_connect, shared_from_this(),
-										  boost::asio::placeholders::error,
-										  ++endpoint_iterator));
-    }else {
-		shutdown();
-	}
-}
 
 /** 
  * 
@@ -185,22 +110,6 @@ void connection::handle_resolve(const boost::system::error_code& err,
  * @param err 
  * @param endpoint_iterator 
  */
-void connection::handle_connect(const boost::system::error_code& err,
-								ba::ip::tcp::resolver::iterator endpoint_iterator) {
-    if (!err) {
-		isOpened=true;
-		start_write_to_server();
-    } else if (endpoint_iterator != ba::ip::tcp::resolver::iterator()) {
-		ssocket_.close();
-		ba::ip::tcp::endpoint endpoint = *endpoint_iterator;
-		ssocket_.async_connect(endpoint,
-							   boost::bind(&connection::handle_connect, shared_from_this(),
-										   boost::asio::placeholders::error,
-										   ++endpoint_iterator));
-    } else {
-		shutdown();
-	}
-}
 
 
 server::server(const ios_deque& io_services, int port)
