@@ -5,6 +5,14 @@
 #IncludeRegexComplain: ^$
 
 /home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/boost.cpp
+connection.hpp
+/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/connection.hpp
+
+/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/connection.cpp
+connection.hpp
+/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/connection.hpp
+
+/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/connection.hpp
 boost/asio.hpp
 -
 boost/shared_ptr.hpp

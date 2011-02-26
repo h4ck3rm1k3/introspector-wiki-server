@@ -127,6 +127,21 @@ boost.s:
 .PHONY : boost.s
 
 # target to build an object file
+connection.o:
+	$(MAKE) -f CMakeFiles/introspector-wiki-server.dir/build.make CMakeFiles/introspector-wiki-server.dir/connection.o
+.PHONY : connection.o
+
+# target to preprocess a source file
+connection.i:
+	$(MAKE) -f CMakeFiles/introspector-wiki-server.dir/build.make CMakeFiles/introspector-wiki-server.dir/connection.i
+.PHONY : connection.i
+
+# target to generate assembly for a file
+connection.s:
+	$(MAKE) -f CMakeFiles/introspector-wiki-server.dir/build.make CMakeFiles/introspector-wiki-server.dir/connection.s
+.PHONY : connection.s
+
+# target to build an object file
 webem.o:
 	$(MAKE) -f CMakeFiles/introspector-wiki-server.dir/build.make CMakeFiles/introspector-wiki-server.dir/webem.o
 .PHONY : webem.o
@@ -168,6 +183,9 @@ help:
 	@echo "... boost.o"
 	@echo "... boost.i"
 	@echo "... boost.s"
+	@echo "... connection.o"
+	@echo "... connection.i"
+	@echo "... connection.s"
 	@echo "... webem.o"
 	@echo "... webem.i"
 	@echo "... webem.s"

@@ -5,6 +5,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/boost.cpp" "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/CMakeFiles/introspector-wiki-server.dir/boost.o"
+  "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/connection.cpp" "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/CMakeFiles/introspector-wiki-server.dir/connection.o"
   "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/webem.cpp" "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/CMakeFiles/introspector-wiki-server.dir/webem.o"
   "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/wikiserver.cpp" "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/CMakeFiles/introspector-wiki-server.dir/wikiserver.o"
   )

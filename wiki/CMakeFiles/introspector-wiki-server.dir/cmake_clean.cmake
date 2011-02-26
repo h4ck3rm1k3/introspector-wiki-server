@@ -2,6 +2,7 @@ FILE(REMOVE_RECURSE
 "CMakeFiles/introspector-wiki-server.dir/boost.o"
 "CMakeFiles/introspector-wiki-server.dir/webem.o"
 "CMakeFiles/introspector-wiki-server.dir/wikiserver.o"
+"CMakeFiles/introspector-wiki-server.dir/connection.o"
 "introspector-wiki-server.pdb"
 "introspector-wiki-server"
 )

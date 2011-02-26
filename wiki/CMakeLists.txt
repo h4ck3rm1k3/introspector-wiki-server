@@ -28,7 +28,7 @@ ENDIF(Boost_FOUND)
 
 SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
 
-ADD_EXECUTABLE(introspector-wiki-server boost.cpp webem.cpp wikiserver.cpp)
+ADD_EXECUTABLE(introspector-wiki-server boost.cpp webem.cpp wikiserver.cpp connection.cpp)
 TARGET_LINK_LIBRARIES(introspector-wiki-server ${USED_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 
 #/opt/cfarm/release/X.Y.Z/bin
