@@ -1,10 +1,34 @@
 #include "connection.hpp"
+//#include <boost/log/formatters/date_time.hpp>
+
+#include <iostream>
+#include <boost/filesystem.hpp>
+//#include <boost/local_time.hpp>
+#include <boost/date_time/time_zone_base.hpp>
+
+//#include <boost/filesystem/fstream.hpp>
+//#include <boost/filesystem/operations.hpp>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <cstdio> // for std::remove
+
+
+#include <algorithm>
+#include <iterator>
+
+
+#include <boost/date_time/local_time/local_time.hpp>
+using namespace boost::filesystem;
 
 // this is going to connect to another server
 void connection::start_connect() {
 	std::string server="";
 	std::string port="80";
 	boost::regex rHTTP("http://(.*?)(:(\\d+))?(/.*)");
+
+	boost::regex rOTHER("/([\\/\\s\\w]+\\.\\w+)");
+
 	boost::smatch m;
 	std::cout << "got URL "	  << fURL  << std::endl;
 	
@@ -22,12 +46,64 @@ void connection::start_connect() {
 			  << fNewURL << std::endl
 			  << std::endl;
 	}
+	//	if rOTHER
+
 	if(server.empty()) {
 		std::cout << "Can't parse URL "
 			  << fURL
 		  //	  << rHTTP
 		  //			  << m
 			  << std::endl;
+		if(boost::regex_search(fURL, m, rOTHER, boost::match_extra)) {
+		  
+		  std::string path=m[1].str();
+
+		    			// append cookie to headers
+		    std::string headers;
+		    //Sat, 26 Feb 2011 19:13:18 GMT
+		    
+		    std::stringstream ss;
+		    ss.exceptions(std::ios_base::failbit);
+		    boost::local_time::local_date_time t(boost::local_time::local_sec_clock::local_time(boost::local_time::time_zone_ptr()));
+		    boost::local_time::local_time_facet* lf(new boost::local_time::local_time_facet("%a, %d %b %Y %H:%M:%S GMT"));
+		    ss.imbue(std::locale(std::cout.getloc(), lf));
+
+		    ss << "HTTP/1.1 200 OK\n";
+		    ss << "Date:"<< t << std::endl;
+		    ss << "Vary: Cookie,User-Agent,Accept-Language,Accept-Encoding" << std::endl;
+		    ss << "Keep-Alive: timeout=15, max=100" << std::endl;
+		    ss << "Connection: Keep-Alive" << std::endl;
+		    ss << "Content-Type: text/html; charset=utf-8" << std::endl;
+		    ss << "Set-Cookie: other2=test; expires=1d" << std::endl;
+
+		    std::ifstream tfs;
+		    std::cout << "going to read file :"  << path << std::endl;
+		    
+		    tfs.open( path.c_str() );
+		    if (tfs)
+		      {
+			std::copy(std::istreambuf_iterator<char>(tfs),
+				  std::istreambuf_iterator<char>(),
+				  std::ostreambuf_iterator<char>(ss));
+		    headers = ss.str();
+		    std::cout << "going to write the received headers to client :"  << headers << std::endl;
+
+		    
+		    ba::async_write(bsocket_, ba::buffer(headers),
+							boost::bind(&connection::handle_browser_write,
+										shared_from_this(),
+										ba::placeholders::error,
+										ba::placeholders::bytes_transferred));
+		      }
+		    else
+		      {
+			std::cout << "cannot to read file :"  << path << std::endl;
+		      }
+
+
+
+
+		  }
 		return;
 	}
 	if(!isOpened || server != fServer || port != fPort) {
