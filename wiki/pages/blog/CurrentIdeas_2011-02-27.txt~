@@ -1,0 +1,25 @@
+I have started on something practical for the introspector project, a fast web server, in fact a wiki.
+The idea is to first make a very fast wiki that can be used for the introspector to host data and programs and serve metadata.
+So far I was able to reuse an existing boost proxy server and add in the ability to serve files and give cookies.
+
+Now the question is of patterns in the uri to access introspector data, and what format it should be in.
+
+    * proxy, getting another url
+    * file, loading an existing file (permissiong etc)
+    * webserver memory, checking out the status of the web server itself
+    * session data, 
+    * icinga processes
+    * compiler processes gcc
+    * binutils processes
+    * debugger processes gdb
+    * svn/git processes
+    * automake processes
+    * database processes/file data
+    * swig
+
+All these things need to be managed via simple urls. we want a system that we can use to bootstrap and load more and more function into. It has to be fast and secure. 
+
+We need to be able to list out and dump any variable in the program as needed.
+
+
+

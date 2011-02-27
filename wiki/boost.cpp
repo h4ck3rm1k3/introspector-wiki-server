@@ -52,12 +52,15 @@ int main(int argc, char** argv) {
  * @param io_service 
  */
 connection::connection(ba::io_service& io_service) : io_service_(io_service),
-													 bsocket_(io_service),
-													 ssocket_(io_service),
-													 resolver_(io_service),
-													 proxy_closed(false),
-													 isPersistent(false),
-													 isOpened(false) {
+						     bsocket_(io_service),
+						     ssocket_(io_service),
+						     resolver_(io_service),
+						     proxy_closed(false),
+						     isPersistent(false),
+						     isOpened(false) 
+
+{
+  init_mime_types();
 }
 
 /** 

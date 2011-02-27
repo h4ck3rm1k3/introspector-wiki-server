@@ -17,18 +17,69 @@
 #include <algorithm>
 #include <iterator>
 
+#include <boost/filesystem.hpp>
+using namespace boost::filesystem;
+
 
 #include <boost/date_time/local_time/local_time.hpp>
 using namespace boost::filesystem;
 
+
+
+void connection::init_mime_types()
+  {
+    mimetypes[".gif"]="image/gif";
+    mimetypes[".png"]="image/png";
+    mimetypes[".jpg"]="image/jpeg";
+    mimetypes[".jpeg"]="image/jpeg";
+    mimetypes[".txt"]="text/html; charset=utf-8";
+    mimetypes[".htm"]="text/html; charset=utf-8";
+    mimetypes[".html"]="text/html; charset=utf-8";
+
+    mimetypes[".cpp"]="text/html; charset=utf-8";
+    mimetypes[".hpp"]="text/html; charset=utf-8";
+    mimetypes[".h"]="text/html; charset=utf-8";
+    mimetypes[".c"]="text/html; charset=utf-8";
+
+
+    mimetypes[".js"]="text/javascript";
+    mimetypes[".xml"]="text/xml";
+    mimetypes[".dtd"]="text/xml";
+    mimetypes[".xsd"]="text/xml";
+
+    mimetypes[".css"]="text/css";
+
+
+    /*
+		    //check the file type 
+		    //
+		    //		    mimetype.assign = ( 
+		    ".pdf"   => "application/pdf",
+		    ".class" => "application/octet-stream",
+		    ".pac"   => "application/x-ns-proxy-autoconfig",
+		    ".swf"   => "application/x-shockwave-flash",
+		    ".wav"   => "audio/x-wav",
+		    ".gif"   => "image/gif",
+		    ".jpg"   => "image/jpeg",
+		    ".jpeg"  => "image/jpeg",
+		    ".png"   => "image/png",
+		    ".css"   => "text/css",
+		    ".html"  => "text/html",
+		    ".htm"   => "text/html",
+		    ".js"    => "text/javascript",
+		    ".txt"   => "text/plain",
+		    ".dtd"   => "text/xml",
+		    ".xml"   => "text/xml"
+		    )
+		    
+		    ss << "Content-Type: " << std::endl;
+    */
+  }
 // this is going to connect to another server
 void connection::start_connect() {
 	std::string server="";
 	std::string port="80";
 	boost::regex rHTTP("http://(.*?)(:(\\d+))?(/.*)");
-
-	boost::regex rOTHER("/([\\/\\s\\w]+\\.\\w+)");
-
 	boost::smatch m;
 	std::cout << "got URL "	  << fURL  << std::endl;
 	
@@ -45,18 +96,55 @@ void connection::start_connect() {
 		  //			  << m
 			  << fNewURL << std::endl
 			  << std::endl;
-	}
-	//	if rOTHER
 
-	if(server.empty()) {
-		std::cout << "Can't parse URL "
-			  << fURL
-		  //	  << rHTTP
-		  //			  << m
-			  << std::endl;
+	if(!isOpened || server != fServer || port != fPort) {
+	  fServer=server;
+	  fPort=port;
+	  ba::ip::tcp::resolver::query query(server, port);
+	  resolver_.async_resolve(query,
+				  boost::bind(&connection::handle_resolve, shared_from_this(),
+					      boost::asio::placeholders::error,
+					      boost::asio::placeholders::iterator));
+	} else {
+	  start_write_to_server();
+	}
+	
+	}
+	else
+	  if(server.empty()) {
+
+	    boost::regex rOTHER("/([\\/\\-\\s\\w]+(\\.?\\w+))");
+
 		if(boost::regex_search(fURL, m, rOTHER, boost::match_extra)) {
+
 		  
 		  std::string path=m[1].str();
+
+		  if ( !exists( path ) )
+		    {
+		      std::cout << "File missing"<< path << "\n";
+		      return;
+		    }
+
+		  std::string type=m[2].str();
+		  std::string content_type = mimetypes[type];
+
+		  try 
+		    {
+		      long file_length= file_size(path);		    
+		    
+		std::cout << "Found path in URL "
+			  << fURL
+			  << "|path|" 
+			  << path
+			  << "|type|"
+			  << type
+			  << "|contenttype|"
+			  << content_type
+			  << "|file_length|"
+			  << file_length
+			  << std::endl;
+
 
 		    			// append cookie to headers
 		    std::string headers;
@@ -73,50 +161,84 @@ void connection::start_connect() {
 		    ss << "Vary: Cookie,User-Agent,Accept-Language,Accept-Encoding" << std::endl;
 		    ss << "Keep-Alive: timeout=15, max=100" << std::endl;
 		    ss << "Connection: Keep-Alive" << std::endl;
-		    ss << "Content-Type: text/html; charset=utf-8" << std::endl;
+		    if (content_type != "")
+		      {
+			ss << "Content-Type: " <<content_type << std::endl;
+		      }
+		    else
+		      {
+			// default
+			ss << "Content-Type: text/html; charset=utf-8" << std::endl;
+		      }
 		    ss << "Set-Cookie: other2=test; expires=1d" << std::endl;
+		    std::cout << "going to read file :"  << path << std::endl;
+
+		    ss << "Content-Length : " <<  file_length << std::endl;
+
+		    ss << std::endl; // need another newline at the end
+
+
+		    /*
+		      Content-Length2740
+		      Last-ModifiedFri, 13 Aug 2010 19:26:20 GMT
+		      Connectionkeep-alive
+		      ExpiresWed, 24 Feb 2021 12:49:11 GMT
+		      Cache-Controlmax-age=315360000
+		      Accept-Rangesbytes
+		     */
 
 		    std::ifstream tfs;
-		    std::cout << "going to read file :"  << path << std::endl;
-		    
+		    headers = ss.str();
+		    std::cout << "going to write the calculated headers to client :"  << headers << std::endl;
+
 		    tfs.open( path.c_str() );
 		    if (tfs)
 		      {
 			std::copy(std::istreambuf_iterator<char>(tfs),
 				  std::istreambuf_iterator<char>(),
 				  std::ostreambuf_iterator<char>(ss));
-		    headers = ss.str();
-		    std::cout << "going to write the received headers to client :"  << headers << std::endl;
 
-		    
-		    ba::async_write(bsocket_, ba::buffer(headers),
-							boost::bind(&connection::handle_browser_write,
-										shared_from_this(),
-										ba::placeholders::error,
-										ba::placeholders::bytes_transferred));
+		
+			headers = ss.str();
+			
+			ba::async_write(bsocket_, ba::buffer(headers),
+					boost::bind(&connection::handle_browser_write,
+						    shared_from_this(),
+						    ba::placeholders::error,
+						    ba::placeholders::bytes_transferred));
+			std::cout << "wrote the file to client :"  << ba::placeholders::bytes_transferred << std::endl;
+
 		      }
 		    else
 		      {
 			std::cout << "cannot to read file :"  << path << std::endl;
+			return ;
 		      }
 
+		    }
+		  catch (boost::filesystem3::filesystem_error e)
+		    {
+		      std::cout << "bad file :"<< path   << std::endl;
+		    }
+		  catch (...)
+		    {			
 
+		      std::cout << "caught exception :"  << std::endl;
 
+		    }
 
+		}
+		else
+		  {
+		    std::cout << "Parse error in URL "
+			      << fURL
+			      << std::endl;
+		    return;
 		  }
-		return;
-	}
-	if(!isOpened || server != fServer || port != fPort) {
-		fServer=server;
-		fPort=port;
-		ba::ip::tcp::resolver::query query(server, port);
-		resolver_.async_resolve(query,
-								boost::bind(&connection::handle_resolve, shared_from_this(),
-											boost::asio::placeholders::error,
-											boost::asio::placeholders::iterator));
-	} else {
-	    start_write_to_server();
-	}
+		
+		
+		}	
+
 }
 void connection::handle_resolve(const boost::system::error_code& err,
 								ba::ip::tcp::resolver::iterator endpoint_iterator) {
@@ -324,7 +446,7 @@ void connection::handle_browser_write(const bs::error_code& err, size_t len) {
 
 
   std::string temp_buff2=std::string(sbuffer.data(),len);
-  std::cout << "connection::handle_browser_write going to write :"  << temp_buff2 << std::endl;
+  //binary output :  std::cout << "connection::handle_browser_write going to write :"  << temp_buff2 << std::endl;
   
   // now we want to append the cookie to the header 
     //	fReq+="Set-Cookie: test_name=value; test_name2=value>2; expires=1d;";
@@ -337,8 +459,6 @@ void connection::handle_browser_write(const bs::error_code& err, size_t len) {
 			       shared_from_this(),
 			       ba::placeholders::error,
 			       ba::placeholders::bytes_transferred));
-	
-	std::cout << "connection::handle_browser_write wrote :"  << temp_buff2 << std::endl;
 	
 	    }
     else {

@@ -20,13 +20,14 @@ find_package (Threads)
 
 SET(Boost_USE_STATIC_LIBS ON)
 SET(Boost_USE_MULTITHREAD ON)
-FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system thread regex)
+FIND_PACKAGE(Boost 1.35.0 REQUIRED COMPONENTS system thread regex filesystem REQUIRED)
+
 IF(Boost_FOUND)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
   LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 ENDIF(Boost_FOUND)
 
-SET(USED_LIBS ${Boost_SYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
+SET(USED_LIBS ${Boost_SYSTEM_LIBRARY}   ${Boost_FILESYSTEM_LIBRARY} ${Boost_THREAD_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 ADD_EXECUTABLE(introspector-wiki-server boost.cpp webem.cpp wikiserver.cpp connection.cpp)
 TARGET_LINK_LIBRARIES(introspector-wiki-server ${USED_LIBS} ${CMAKE_THREAD_LIBS_INIT})

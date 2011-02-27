@@ -12,6 +12,10 @@
 
 #include <iostream>
 #include <string>
+#include <map>
+//boost::associative_property_map
+#include <boost/property_map/property_map.hpp>
+
 
 namespace ba=boost::asio;
 namespace bs=boost::system;
@@ -82,6 +86,11 @@ private:
   bool isOpened;
 
   std::string fReq;
+
+  // mapping of mime types  .etc => text/html; charset=utf-8
+  std::map<std::string, std::string> mimetypes;
+  //  boost::associative_property_map< std::map<std::string, std::string> > mime_map; //(mimetypes);
+  void init_mime_types();
   
   typedef std::map<std::string,std::string> headersMap;
   headersMap reqHeaders, respHeaders;
