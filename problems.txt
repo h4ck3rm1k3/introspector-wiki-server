@@ -1,0 +1,4 @@
+./etherpad/test/docetherpadorg/static/compressed/aceeditor.js
+./etherpad/pad/contrib/gravpad.user.js
+./etherpad/pad/infrastructure/framework-src/modules/fileutils.js
+./etherpad/pad/infrastructure/framework-src/modules/exceptionutils.js

@@ -1,0 +1,3 @@
+This is a simple "wiki", stored in text files in the wiki directory. 
+It is edited in git, in emacs on a server connected across ssh from my linux machine, running in a terminal.
+

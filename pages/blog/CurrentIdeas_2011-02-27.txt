@@ -1,0 +1,98 @@
+I have started on something practical for the introspector project, a fast web server, in fact a wiki.
+The idea is to first make a very fast wiki that can be used for the introspector to host data and programs and serve metadata.
+So far I was able to reuse an existing boost proxy server and add in the ability to serve files and give cookies.
+
+Now the question is of patterns in the uri to access introspector data, and what format it should be in.
+we should be able to access data from following sources :
+
+    * web or proxy, getting another url
+    web/http://blah
+    proxy/http://blah
+    web/cache/http://blah
+    web/search/key/**KEY**/page/http://blah
+
+    * file, loading an existing file (permissiong etc)
+    * web/server/servername/reports/status, checking out the status of the web server itself
+      ** lru_cache, svn/http://blackcat.ca/svn/trunk/lru_cache, build, link into webserver, 
+    * process/memory, accessing a memory address in a process
+    * web/client/session/data, client session data
+    
+    * icinga,processes
+    * compiler, processes gcc
+    * binutils, processes
+    * debugger, processes gdb
+    * svn/git, processes
+    * automake, processes
+    * database, processes/file data
+    * swig, wrapper generator 
+
+    * web/search, search in the previously specified space
+    * web/index, create an index with the parameters give
+    * function/param, create a parameter that is passed to a function
+    * data/type 
+    
+    mvc/model :
+    * mvc/model
+    * mvc/model/type
+    * mvc/model/collection
+    * mvc/model/relationship
+
+    mvc :
+    * mvc/view
+    * mvc/controller
+    * mvc/controller/control
+    * mvc/controller/control/parameter
+
+    data/format :
+    * data/format/raw data
+    * data/format/xml
+    * data/format/xml/xmlrpc
+    * data/format/xml/xpath
+    * data/format/xml/xquery
+    * data/format/xml/rdfxml
+    * data/format/yml
+    * data/format/json,  web/http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx/search/git
+    * data/format/javascript
+    * data/format/c++
+    * data/format/spirit/lib - there are many plugins for spirit
+        http://boost-spirit.com/repository/applications/show_contents.php
+
+    * data/format/spirit/xpressive
+      http://boost-sandbox.sourceforge.net/libs/xpressive/doc/html/index.html
+
+
+Review other servers :
+ boost examples   http://www.boost.org/doc/libs/1_38_0/doc/html/boost_asio/example/allocation/server.cpp
+ tntnet 
+ 	http://www.tntnet.org/
+
+Handle Template Toolkit formatting :
+http://template-toolkit.org/docs/modules/Template/Plugin/Table.html
+
+Interface to facebook : 
+ http://www.facebook.com/
+ joindiaspora.com
+
+Be able to get messages from wikipedia, use the api :
+   http://www.mediawiki.org/wiki/API:Main_page
+   http://en.wikipedia.org/w/api.php
+   
+
+
+    
+TEMPLATE path/string:prefix : \n
+
+
+All these things need to be managed via simple urls. we want a system that we can use to bootstrap and load more and more function into. It has to be fast and secure. 
+
+We need to be able to list out and dump any variable in the program as needed.
+
+We need to be able to process these in the wiki.
+Should be able to use the mediawiki api.
+Should have a model-view-controller interface.
+
+be able to describe the model in the wiki, in c for example.
+be able to 
+
+
+

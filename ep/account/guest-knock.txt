@@ -1,0 +1,8 @@
+/*
+~/experiments2/wiki/wiki/etherpad/pad/etherpad/src/static/js/pro/guest-knock-client.js
+
+	::1 localhost - [05/Mar/2011:10:45:59 +0100] "POST /ep/account/guest-knock HTTP/1.1" 404 345 "http://localhost/etherpad/test/docetherpadorg/index.html" "Mozilla/5.0 (X11; U; Linux i686; de; rv:1.9.2.14pre) Gecko/20101218 Ubuntu/9.10 (karmic) Namoroka/3.6.14pre"
+*/
+{
+	test: 1
+};

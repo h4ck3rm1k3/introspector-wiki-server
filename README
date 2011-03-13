@@ -1,0 +1,18 @@
+This is the start of the wikiserver with an etherpad front end.
+Idea is to make a simple c++ wiki server that has an etherpad like frontend.
+
+code is hosted here :
+https://github.com/h4ck3rm1k3/introspector-wiki-server
+
+
+It is meant to be run like this at the moment.
+http://localhost/etherpad/test/docetherpadorg/index.html
+
+currently it displays a pad and can be edited, the server side code runs as fastcgi on lighttpd. 
+wiki/fcgi/etherpad.fcgi
+
+The c++ webserver here is a very very simple experiment that will be changed to match the fcgi code.
+
+more to come, I am releasing this after one week of hacking because at least the very basics are running without any of the etherpad server code.
+
+Unfortunatly I accidently overwrote my lightttpd.conf so I cannot check that in right now.
