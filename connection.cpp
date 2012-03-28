@@ -216,10 +216,10 @@ void connection::start_connect() {
 		      }
 
 		    }
-		  catch (boost::filesystem3::filesystem_error e)
-		    {
-		      std::cout << "bad file :"<< path   << std::endl;
-		    }
+		  //		  catch (boost::filesystem3::filesystem_error e)
+		  //		    {
+		  //		      std::cout << "bad file :"<< path   << std::endl;
+		  //		    }
 		  catch (...)
 		    {			
 

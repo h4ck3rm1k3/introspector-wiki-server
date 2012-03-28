@@ -1,4 +1,4 @@
-# Install script for directory: /home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki
+# Install script for directory: /home/mdupont/experiments/introspector-wiki-server
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/home/mdupont/experiments/introspector-wiki-server/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "/home/h4ck3rm1k3/experiments/icinga/cxx0x/wiki/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/home/mdupont/experiments/introspector-wiki-server/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)
